@@ -1,0 +1,15 @@
+<select class="chosen-select form-control">
+ <option>Please select...</option>
+<% _.each(steps, function(step) { %>
+ 	<option data-step="" data-keyPrimary="<%= step.get('step_key_primary') %>" value="<%= step.get('step_key_primary') %>"></option>
+ <% }); %>
+</select>
+<ul>
+<% _.each(steps, function(step) { 
+	if (typeof step._embedded["products_steps:step"] !== 'undefined')
+	%>
+ 	<li><label><%=step._embedded["products_steps:step"].description %></label>
+ <% } ); %>
+
+
+</ul>

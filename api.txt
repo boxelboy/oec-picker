@@ -1,0 +1,120 @@
+Let([
+
+
+// quotes & sales order
+tmp = Synergize_Api_AddEntity("product_selected_options"; "Product_Selected_Options"; "Key_Primary");
+tmp = Synergize_Api_AddEntity("products"; "Products"; "Key_Primary");
+tmp = Synergize_Api_AddEntity("steps"; "Steps"; "Key_Primary");
+tmp = Synergize_Api_AddEntity("options"; "Options"; "Key_Primary");
+tmp = Synergize_Api_AddEntity("products_steps"; "Product_LINK_Step"; "Key_Primary");
+tmp = Synergize_Api_AddEntity("steps_options"; "Step_LINK_Option"; "Key_Primary");
+tmp = Synergize_Api_AddEntity("simulator"; "Simulator"; "Key_Primary");
+tmp = Synergize_Api_AddEntity("simulator_items"; "Simulator_Line_Items"; "Key_Primary");
+tmp = Synergize_Api_AddEntity("custompricing"; "Custom_Pricing"; "Key_Primary");
+tmp = Synergize_Api_AddEntity("quotes"; "Quote"; "Quote_Number");
+
+
+// products fields
+tmp = Synergize_Api_AddProperty("products"; "description"; "Description");
+tmp = Synergize_Api_AddProperty( "products"; "key_primary"; "Key_Primary"); 
+tmp = Synergize_Api_AddProperty( "products"; "finished_good_key_primary"; "Finished_Good_Key_Primary"); 
+tmp = Synergize_Api_AddProperty( "products"; "customer_key_primary"; "Customer_Key_Primary"); 
+tmp = Synergize_Api_AddProperty( "products"; "order_type_key_primary"; "Order_Type_Key_Primary"); 
+tmp = Synergize_Api_AddProperty( "products"; "printer_key_primary"; "Printer_Key_Primary"); 
+tmp = Synergize_Api_AddProperty( "products"; "press_key_primary"; "Press_Key_Primary");
+
+// steps fields
+tmp = Synergize_Api_AddProperty( "steps"; "key_primary"; "Key_Primary"); 
+tmp = Synergize_Api_AddProperty( "steps"; "description"; "Description"); 
+tmp = Synergize_Api_AddProperty( "steps"; "product_key_primary"; "Product_Key_Primary"); 
+tmp = Synergize_Api_AddProperty( "steps"; "description_lower"; "Description_Lower");
+tmp = Synergize_Api_AddProperty( "steps"; "unique_id"; "Unique_ID");
+
+// products steps fields
+tmp = Synergize_Api_AddProperty( "products_steps"; "key_primary"; "Key_Primary");
+tmp = Synergize_Api_AddProperty( "products_steps"; "product_key_primary"; "Product_Key_Primary");
+tmp = Synergize_Api_AddProperty( "products_steps"; "step_key_primary"; "Step_Key_Primary");
+tmp = Synergize_Api_AddProperty( "products_steps"; "sequence"; "Sequence");
+tmp = Synergize_Api_AddProperty( "products_steps"; "step_type"; "Step_Type");
+tmp = Synergize_Api_AddProperty( "products_steps"; "parent_key"; "Parent_Product_LINK_Step_Key_Primary");
+
+// options fields
+tmp = Synergize_Api_AddProperty( "options"; "key_primary"; "Key_Primary"); 
+tmp = Synergize_Api_AddProperty( "options"; "description"; "Description"); 
+tmp = Synergize_Api_AddProperty( "options"; "option"; "Option"); 
+tmp = Synergize_Api_AddProperty( "options"; "description_lower"; "Description_Lower");
+
+// step options fields
+tmp = Synergize_Api_AddProperty("steps_options"; "parent_option_key_primary"; "Parent_Option_Key_Primary");
+tmp = Synergize_Api_AddProperty("steps_options"; "option_key_primary"; "Option_Key_Primary");
+tmp = Synergize_Api_AddProperty("steps_options"; "description_for_tree"; "Description_for_Tree");
+tmp = Synergize_Api_AddProperty("steps_options"; "step_key_primary"; "Step_Key_Primary");
+tmp = Synergize_Api_AddProperty("steps_options"; "parent_step_option_key_primary"; "Parent_Step_LINK_Option_Key_Primary");
+tmp = Synergize_Api_AddProperty("steps_options"; "calculation"; "Calculation_From_Builder");
+tmp = Synergize_Api_AddProperty("steps_options"; "parent_product_step_key_primary"; "Parent_Product_LINK_Step_Key_Primary");
+tmp = Synergize_Api_AddProperty("steps_options"; "product_step"; "Product_Link_Step_Key_Primary");
+tmp = Synergize_Api_AddProperty("steps_options"; "default"; "Default_Value");
+tmp = Synergize_Api_AddProperty("steps_options"; "price"; "Price");
+tmp = Synergize_Api_AddProperty("steps_options"; "product_key_primary"; "Product_Key_Primary");
+
+
+// simulator line items
+tmp = Synergize_Api_AddProperty("simulator_items"; "step_key"; "Step_Key_Primary");
+tmp = Synergize_Api_AddProperty("simulator_items"; "option_key"; "Option_Key_Primary");
+tmp = Synergize_Api_AddProperty("simulator_items"; "simulator_key"; "Simulator_Key_Primary");
+tmp = Synergize_Api_AddProperty("simulator_items"; "value"; "Value");
+tmp = Synergize_Api_AddProperty("simulator_items"; "product_key"; "Product_Key_Primary");
+tmp = Synergize_Api_AddProperty("simulator_items"; "step_option"; "Step_Link_Option_Key_Primary");
+tmp = Synergize_Api_AddProperty("simulator_items"; "evaluate"; "Calculation_Evaluate");
+tmp = Synergize_Api_AddProperty("simulator_items"; "description"; "Description");
+
+
+// simulator fields
+tmp = Synergize_Api_AddProperty("simulator"; "product_key"; "Product_Key_Primary");
+
+// product selected options fields
+tmp = Synergize_Api_AddProperty("product_selected_options"; "step_key"; "Step_Key_Primary");
+tmp = Synergize_Api_AddProperty("product_selected_options"; "option_key"; "Option_Key_Primary");
+tmp = Synergize_Api_AddProperty("product_selected_options"; "simulator_key"; "Simulator_Key_Primary");
+tmp = Synergize_Api_AddProperty("product_selected_options"; "value"; "Value");
+tmp = Synergize_Api_AddProperty("product_selected_options"; "product_key"; "Product_Key_Primary");
+tmp = Synergize_Api_AddProperty("product_selected_options"; "step_option"; "Step_Link_Option_Key_Primary");
+tmp = Synergize_Api_AddProperty("product_selected_options"; "quote_key_primary"; "Quote_Line_Item_Key_Primary");
+tmp = Synergize_Api_AddProperty("product_selected_options"; "order_key_primary"; "Order_Line_Item_Key_Primary");
+tmp = Synergize_Api_AddProperty("product_selected_options"; "quote_number"; "Quote_Number");
+tmp = Synergize_Api_AddProperty("product_selected_options"; "evaluate"; "Calculation_Evaluate");
+tmp = Synergize_Api_AddProperty("product_selected_options"; "description"; "Option_Description");
+
+
+// custom pricing fields
+tmp = Synergize_Api_AddProperty("custompricing"; "option_key"; "Option_Key_Primary");
+tmp = Synergize_Api_AddProperty("custompricing"; "customer_key"; "Customer_Key_Primary");
+tmp = Synergize_Api_AddProperty("custompricing"; "custom_price"; "Custom_Price");
+
+// quote fields
+tmp = Synergize_Api_AddProperty("quotes"; "quote_num"; "Quote_Number");
+tmp = Synergize_Api_AddProperty("quotes"; "customer_acc_num"; "Customer_Account_No");
+
+// relationships
+tmp = Synergize_Api_AddRelationship("products_steps"; "product"; "products"; "Product_Key_Primary"; "products_steps");
+tmp = Synergize_Api_AddRelationship("products_steps"; "step"; "steps"; "Step_Key_Primary"; "products_steps");
+tmp = Synergize_Api_AddRelationship("steps_options"; "step"; "steps"; "Step_Key_Primary"; "steps_options");
+tmp = Synergize_Api_AddRelationship("steps_options"; "option"; "options"; "Option_Key_Primary"; "steps_options");
+tmp = Synergize_Api_AddRelationship("steps_options"; "parent_option"; "options"; "Parent_Option_Key_Primary"; "child_steps_options");
+tmp = Synergize_Api_AddRelationship("simulator_items"; "option"; "options"; "Option_Key_Primary"; "simulator_items");
+tmp = Synergize_Api_AddRelationship("simulator_items"; "step"; "steps"; "Step_Key_Primary"; "simulator_items");
+tmp = Synergize_Api_AddRelationship("simulator_items"; "product"; "products"; "Product_Key_Primary"; "simulator_items");
+tmp = Synergize_Api_AddRelationship("simulator_items"; "step_option"; "steps_options"; "Step_Link_Option_Key_Primary"; "simulator_items");
+tmp = Synergize_Api_AddRelationship("product_selected_options"; "option"; "options"; "Option_Key_Primary"; "product_selected_options");
+tmp = Synergize_Api_AddRelationship("product_selected_options"; "step"; "steps"; "Step_Key_Primary"; "product_selected_options");
+tmp = Synergize_Api_AddRelationship("product_selected_options"; "product"; "products"; "Product_Key_Primary"; "product_selected_options");
+tmp = Synergize_Api_AddRelationship("product_selected_options"; "step_option"; "steps_options"; "Step_Link_Option_Key_Primary"; "product_selected_options");
+tmp = Synergize_Api_AddRelationship("product_selected_options"; "quote"; "quotes"; "Quote_Number"; "product_selected_options");
+
+tmp = Synergize_Api_AddRelationship("custompricing"; "options"; "options"; "Option_Key_Primary"; "custompricing")
+
+
+
+];
+"OK"
+)

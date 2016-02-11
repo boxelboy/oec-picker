@@ -1,0 +1,24 @@
+<label for="<%= step %>" data-simKey="<%= simKey %>" data-keyParent="<%= parentKey %>" data-keyProduct="<%= productKey %>" data-keySequence="<%= seq %>"><%= step %></label>
+<% if (steps[0]._embedded["steps_options:option"].description === "Value") { %>
+
+<input id="<%= seq %>" autofocus class="input-data form-control" type="number" placeholder="Please enter a value..." data-keyOption="<%= steps[0]._embedded["steps_options:option"].id %>" data-skp="<%= step.get('step_key_primary') %>" data-keyParent="<%= parentKey %>" data-keyProduct="<%= productKey %>" data-keySequence="<%= seq %>" data-stepKey="<%= steps[0].attributes.product_step %>" data-simKey="<%= simKey %>" data-description="<%= steps[0].attributes.description_for_tree %>" data-stepLink="<%= steps[0].attributes.id %>" value="<%= defaultVal %>" />
+
+<% } else if (steps[0]._embedded["steps_options:option"].description === "Calculation") { %>
+<input autofocus class="input-data form-control" type="text" placeholder="Please enter a value..." data-keyOption="<%= steps[0]._embedded["steps_options:option"].id %>" data-keyParent="<%= parentKey %>" data-keyProduct="<%= productKey %>" data-keySequence="<%= seq %>" data-stepKey="<%= steps[0].attributes.product_step %>" data-skp="<%= steps[0].attributes.step_key_primary %>" data-simKey="<%= simKey %>" data-description="<%= steps[0].attributes.description_for_tree %>" data-stepLink="<%= steps[0].attributes.id %>" value="<%= num %>" readonly />
+<% } else { %>
+
+<select class="chosen-select form-control" id="<%= seq %>">
+ <option value="default">Please select...</option>
+<% _.each(steps, function(step) { %>
+ 	<option data-stepLink="<%= step.get('id') %> " data-skp="<%= step.get('step_key_primary') %>" data-stepKey="<%= step.get('product_step') %>" data-price="<%= step.get('price') %>"data-simKey="<%= simKey %>" data-keyProduct="<%= productKey %>" data-keySequence="<%= seq %>" data-description="<%= step.get('description_for_tree') %>"value="<%= step._embedded["steps_options:option"].id %>"
+ 		<% if (steps.length == 1 || defaultVal == step._embedded["steps_options:option"].id) { %>
+ 			selected="selected"
+ 		<% } %>
+ 		>
+ 		<%= step._embedded["steps_options:option"].description %>
+ 	</option>
+ <% }); %>
+
+</select>
+<% } %>
+<div style="clear:both"></div>

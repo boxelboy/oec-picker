@@ -1,0 +1,159 @@
+.flow {
+    margin: 20px auto;
+    width: 455px;
+    min-height: auto;
+}
+.flow ul {
+    padding-top: 20px;
+    position: relative;
+}
+span.codeBreakdown {
+    font-size: 14px;
+    font-weight: bold;
+}
+.flow li {
+    float: left; 
+    text-align: center;
+    list-style-type: none;
+    position: relative;
+    padding: 20px 3px 0 3px;
+}
+..tableArea li::before, .flow li::after{
+    content: '';
+    position: absolute; 
+    top: 0; 
+    right: 50%;
+    border-top: 1px solid #ccc;
+    width: 50%; 
+    height: 20px;
+}
+.flow li::after{
+    right: auto; 
+    left: 50%;
+    border-left: 1px solid #ccc;
+}
+.flow li:only-child::after, .flow li:only-child::before {
+    content: '';
+    display: none;
+}
+.flow li:only-child{ padding-top: 0;}
+.flow li:first-child::before, .flow li:last-child::after{
+    border: 0 none;
+}
+.start {
+    font-weight: bold;
+    float: left;
+    text-align: left;
+    font-size: 14px;
+    padding-top: 7px;
+}
+.flow li:last-child::before{
+    border-right: 1px solid #ccc;
+    -webkit-border-radius: 0 5px 0 0;
+       -moz-border-radius: 0 5px 0 0;
+            border-radius: 0 5px 0 0;
+}
+.flow li:first-child::after{
+    -webkit-border-radius: 5px 0 0 0;
+       -moz-border-radius: 5px 0 0 0;
+            border-radius: 5px 0 0 0;
+}
+.flow ul ul::before{
+    content: '';
+    position: absolute; top: 0; left: 50%;
+    border-left: 1px solid #ccc;
+    width: 0; height: 20px;
+}
+.flow li a{
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: #ccc;
+    font-family: arial, verdana, tahoma;
+    font-size: 11px;
+    display: inline-block;
+    -webkit-border-radius: 5px;
+       -moz-border-radius: 5px;
+            border-radius: 5px;
+}
+
+.flow li a:hover, .flow li a:hover+ul li a {
+    background: #c8e4f8; 
+    color: #000; border: 
+    1px solid #94a0b4;
+}
+.flow li a:hover+ul li::after, 
+.flow li a:hover+ul li::before, 
+.flow li a:hover+ul::before, 
+.flow li a:hover+ul ul::before{
+    content: '';
+    border-color:  #94a0b4;
+}
+
+#options {
+    margin-right: auto;
+    margin-left: auto;
+    width: 75%;
+}
+
+.container ul {
+    list-style: none;
+}
+
+.container ul li label {
+    color: #eee;
+}
+
+label {
+    display: inline-block;
+    color: #ccc;
+    font-weight: bold;
+    width: 160px;
+    text-align: right;
+}
+label:after {content: ":   ";}
+label:hover {
+    color: #000;
+    cursor: pointer;
+}
+select.form-control {
+    height: 30px;
+    width: 300px;
+    display: inline-block;
+
+    background-color: transparent;
+
+    line-height: 18px;
+    padding: 4px;
+}
+
+input.input-data {
+    display: inline-block;
+    width: 300px;
+}
+
+.container div {
+    width: 466px;
+    margin: 5px auto 0 auto;
+}
+div.exist {
+    padding:5px;
+    border-bottom: 1px solid #ccc;
+    clear: both;
+}
+div.exist:hover {
+    background-color: #ffff99;
+}
+
+div.exist:hover .fa-circle {
+    background-color: #ffff99;
+    visibility: visible;
+}
+i.fa-circle {
+    color: #0099ff;
+    visibility: hidden;
+}
+input:focus, select:focus {
+    background-color: #ffff99;
+}

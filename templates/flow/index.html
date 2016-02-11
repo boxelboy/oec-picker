@@ -1,0 +1,16 @@
+<div style="margin-top:10px" class="row">
+    <div class="col-md-12"> <p class="lead">Calculation Builder</p></div>
+    <div class="col-md-3">
+        <div class="list-group">
+            <% _.each(products.related('products:products_steps').models, function(steps) { %>
+            	<% if(steps.get('step_type') == "Calculation") { %>
+            		<a href="#" class="list-group-item"><%= steps.related('products_steps:step').get('description') %></a>
+            	<% } %>
+            <% }); %>
+        </div>
+
+    </div>
+    <div class="col-md-9 flowChart">
+
+    </div>
+</div>

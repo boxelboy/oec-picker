@@ -1,0 +1,26 @@
+
+<div class="project-list">
+  <table class="table table-hover">
+     <thead>
+        <tr>
+            <th>Work Centres</th>
+
+        </tr>
+    </thead>
+        <tbody>
+            <% _.each(products, function(product) { %>
+              <% _.each(product, function(p) { %>
+            <tr>
+                <td><%= p.Description %><td>
+                <% _.each(p._embedded, function(fg) { %>
+                    <td><%= fg.Description %></td>
+                <% }) %>
+                
+
+            </tr>
+               <% }); %>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
+</div>

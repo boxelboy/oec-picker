@@ -1,0 +1,33 @@
+<div class="row">
+    <div class="col-xs-12">
+        <p class="lead text-center bg-info text-info center-block">
+        	<%= params.data.start %>
+        	<br>
+	        <span class="codeBreakdown">
+	        	" <%= params.data.type %> (<%= params.data.start %>  <%= params.data.operator %>  <%= params.data.end %>) "
+	        </span>
+        </p>
+    </div>
+</div>
+
+<% if (params.data.type == "if") { %>
+<div class="row">
+    <div class="col-xs-6 text-center insertAreaTrue">
+        <p class="center-block"><span class="btn btn-success btn-lg true">True</span></p>
+        <p class="center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
+    </div>
+    <div class="col-xs-6 text-center insertAreaFalse">
+        <p class="center-block"><span class="btn btn-danger btn-lg false">False</span></p>
+        <p class="center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
+    </div>
+</div>
+<% } %>
+
+<% if (params.data.type == "calculation") { %>
+<div class="row">
+    <div class="col-xs-12 text-center insertArea">
+      	<p class="center-block"><span class="glyphicon glyphicon-arrow-down"></span></p>
+        <p class="center-block"><span class="btn btn-success btn-lg sum">Sum</span></p>
+    </div>
+</div>
+<% } %>

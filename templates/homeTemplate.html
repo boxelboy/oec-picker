@@ -1,0 +1,28 @@
+<div class="project-list">
+  <h2>Products</h2>
+  <table class="table table-hover">
+     <thead>
+        <tr>
+            <th>Name</th>
+            <th>Finished Goods</th>
+            <th>Customer</th>
+            <th>Order Type</th>
+            <th>Printer</th>
+            <th>Press</th>
+        </tr>
+    </thead>
+        <tbody>
+              <% _.each(products, function(product) { %>
+            <tr>
+                <td><a href="#option/<%= product.attributes.key_primary %>"><%= product.attributes.description %></a></td>
+                <td><%= product.related('products:finished_goods').get('description') %> </td>
+                <td><%= product.related('products:customers').get('description') %> </td>
+                <td><%= product.related('products:order_type').get('description') %> </td>
+                <td><%= product.related('products:printers').get('description') %> </td>
+                <td><%= product.related('products:press').get('description') %> </td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+
+<!--this.stuff.models[3]._embedded["products:products_steps"][0]._embedded["products_steps:step"].description-->
