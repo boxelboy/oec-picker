@@ -1,2 +1,1 @@
-# oec-picker
-backboneJS project
+# backboneJS project
