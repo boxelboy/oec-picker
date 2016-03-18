@@ -1,3 +1,4 @@
+var version = '1.3.7';
 require.config({
     baseUrl: 'lib',
 	paths: {
@@ -19,8 +20,8 @@ require.config({
 	    'underscore': {
 	        exports: '_'
 	    },
-    }
-
+    },
+    urlArgs: version
 });
 
 require(['jquery', 'underscore', 'backbone', 'sync', '../app/router', '../app/AppView'], function ($, _, Backbone, Sync, Router, AppView) {
