@@ -1,7 +1,7 @@
 define(['require', 'app/models/Base', 'app/models/Product_Steps', 'app/models/Step_LINK_Option'], function (require, Base) {
     'use strict';
     return Base.extend({
-        urlRoot: 'http://localhost:63471/api/BusinessMan/steps',
+        urlRoot: '/api/BusinessMan/steps',
 
         relations: function () {
             return [

@@ -1,4 +1,33 @@
 /*---------------------------------------------------------------------------------------------------
+*                                                                                                   *
+* This view reads inbound files and imports into BusinessMan                                        *
+*                                                                                                   *
+* +===============================+===========================+========================+            *
+* |       Table Name              |  API Entity Name          |  BusinessMan File      |            *
+* +===============================+===========================+========================+            *
+* | Product_Selected_Options      | product_selected_options  | BMData6                |            *
+* +-------------------------------+---------------------------+------------------------+            *
+* | Products                      | products                  | OEC_Configurator       |            *
+* +-------------------------------+---------------------------+------------------------+            *
+* | Steps      					  | steps 					  | OEC_Configurator       |            *
+* +-------------------------------+---------------------------+------------------------+            *
+* | Options                       | options                   | OEC_Configurator       |            *
+* +-------------------------------+---------------------------+------------------------+            *
+* | Product_LINK_Step             | products_steps            | OEC_Configurator       |            *
+* +-------------------------------+---------------------------+------------------------+            *
+* | Step_LINK_Option              | steps_options             | OEC_Configurator       |            *
+* +-------------------------------+---------------------------+------------------------+            *
+* | Simulator                     | simulator                 | OEC_Configurator       |            *
+* +-------------------------------+---------------------------+------------------------+            *
+* | Simulator_Line_Items          | simulator_items           | OEC_Configurator       |            *
+* +-------------------------------+---------------------------+------------------------+            *
+* | Custom_Pricing                | custompricing             | OEC_Configurator       |            *
+* +-------------------------------+---------------------------+------------------------+            *
+* | Quote            			  | quotes        			  | BMData6                |            *
+* +-------------------------------+---------------------------+------------------------+            *
+* | Quote_Line_Items              | quote_line_items          | BMData6                |            *
+* +-------------------------------+---------------------------+------------------------+            *
+*                                                                                                   *
 * To add new 'tables' make sure the new API entity has the following fields/properties AS MINIMUM	*
 *																									*
 *		id, option_key, product_key, step_key, step_option, value									*																									*
@@ -120,6 +149,19 @@ define([
 					theFile = "BusinessMan";
 					break;
 				case "quote":
+					this.simCol = new productselectedoptionsCollection();
+					this.simItemCol = new productselectedoptionsCollection();
+					this.searchObj = {
+						fields: "*,product_selected_options.*,product_selected_options.step_option.*,step_option.step.*,step.*,product_selected_options.option,option.*,product_selected_options.quote.*,quote.*",
+						quote_key_primary: data.record,
+					};
+					this.key1 = "product_selected_options:option";
+					this.key2 = "product_selected_options:step_option";
+					this.key3 = "api:product_selected_options";
+					theFile = "BusinessMan";
+					break;
+
+				case "specialquote":
 					this.simCol = new productselectedoptionsCollection();
 					this.simItemCol = new productselectedoptionsCollection();
 					this.searchObj = {
@@ -253,6 +295,13 @@ define([
 															saveData['step_option'] = this.steplinkCol.models[0].get('id');
 															itemSaveModel = new productselectedoptionsModel(saveData);
 															break;
+														case "specialquote":
+															saveData['quote_key_primary'] = valueArr[0];
+															saveData['option_key'] = this.steplinkCol.models[0].get('option_key_primary');
+															saveData['step_key'] = this.steplinkCol.models[0].get('step_key_primary');
+															saveData['step_option'] = this.steplinkCol.models[0].get('id');
+															itemSaveModel = new productselectedoptionsModel(saveData);
+															break;
 													}
 
 										itemSaveModel.fetch({ data: saveData }).done(_.bind(function(check){
@@ -296,6 +345,10 @@ define([
 														itemSaveModel = new productselectedoptionsModel(saveData);
 														break;
 													case "quote":
+														saveData['option_key'] = Number(saveData['option_key']);
+														itemSaveModel = new productselectedoptionsModel(saveData);
+														break;
+													case "specialquote":
 														saveData['option_key'] = Number(saveData['option_key']);
 														itemSaveModel = new productselectedoptionsModel(saveData);
 														break;
@@ -477,6 +530,10 @@ define([
 						this.simItemColModelObj['quote_key_primary'] = valueArr[0];
 						itemSaveModel = new productselectedoptionsModel(this.simItemColModelObj);
 						break;
+					case "specialquote":
+						this.simItemColModelObj['quote_key_primary'] = valueArr[0];
+						itemSaveModel = new productselectedoptionsModel(this.simItemColModelObj);
+						break;
 				}
 				itemSaveModel.save();
 
@@ -610,6 +667,9 @@ define([
 				case "quote":
 					itemGetModel = new productselectedoptionsModel({ id: data });
 					break;
+				case "specialquote":
+					itemGetModel = new productselectedoptionsModel({ id: data });
+					break;
 			}
 
 			itemGetModel.fetch().done(_.bind(function(getResponse){
@@ -641,6 +701,9 @@ define([
 			this.updQuoteLineItems({ value: 1 });
 			var compiledbuttonTemplate = _.template(completeTemplate);
 			this.$el.append(compiledbuttonTemplate(data));
+			if (this.table == "specialquote") {
+				$.get("/fm?action=script&file="+theFile+"&script="+theScript);
+			}
 		},
 
 		/* button displayed at end of all fields - no longer needed but kept in case we return to having a save button */

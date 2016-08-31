@@ -1,7 +1,7 @@
 define(['require', 'app/models/Base','app/models/Customer', 'app/models/Finished_Goods', 'app/models/Order_Type', 'app/models/Press', 'app/models/Printers', 'app/models/Product_Steps'], function (require, Base) {
     'use strict';
     return Base.extend({
-        urlRoot: 'http://localhost:63471/api/BusinessMan/products',
+        urlRoot: '/api/BusinessMan/products',
 
         relations: function () {
             return [

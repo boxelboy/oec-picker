@@ -32,7 +32,6 @@ define([
         },
         success: _.bind(function ()
         {
-          console.log('steps stuff', this.stuff.models);
           this.render();
         }, this)
       });
@@ -44,7 +43,6 @@ define([
     selectOption: function (e)
     {
       var selected = $(e.target).find(":selected").attr("data-keyprimary");
-      console.log(selected);
 
     },
     render: function ()

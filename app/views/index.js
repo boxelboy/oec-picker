@@ -30,7 +30,6 @@ define([
     },
 
     render: function(){
-      console.log(this.stuff.models);
       var data = {
         items: this.stuff.models,
       };

@@ -27,7 +27,6 @@ define([
                 data: {fields: '*'
               },
               success: _.bind(function() {
-                console.log(this.stuff2);
               }, this)
               });
 

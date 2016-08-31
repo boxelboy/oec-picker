@@ -31,8 +31,7 @@ define([
 	'app/collections/Simulator_Items',
 	'app/collections/ProductSelectedOptions',
 	'app/models/ProductSelectedOptions',
-	'app/models/Options',
-	'app/models/Quotes'],
+	'app/models/Options'],
 	function ($, _, Backbone, stepLinkCollection, steplinkModel, optionsTemplate, buttonTemplate, nostepsTemplate, noMoreStepsTemplate, existTemplate, completeTemplate, productstepsCollection, productstepsModel, simModel, simitemsModel, simitemsCollection, productselectedoptionsCollection, productselectedoptionsModel)
 	{
 	var valueArr = [0];
@@ -63,11 +62,9 @@ define([
 				this.seqID = Number(data.seq) + 1;
 				this.parentKey = data.parentKey;
 			}
-			this.listenTo(this, 'calc', this.getCalc);
 			this.productKey = data.productKey;
 			this.table = data.table;
 			this.record = data.record;
-			//this.custNum;
 
 /*------------------------------------------------------------------------------------------------------------------------
 * Below is the first SWITCH/CASE statements you need to edit. The format is as follows:
@@ -89,7 +86,6 @@ define([
 			switch (this.table) {
 				case "simulator":
 					this.simStuff = new simitemsCollection();
-					this.simItem = new simitemsCollection();
 					this.searchObj = {
 						fields: "*,simulator_items.*,simulator_items.step_option.*,step_option.step.*,step.*,simulator_items.option,option.*",
 						simulator_key: data.record,
@@ -100,9 +96,8 @@ define([
 					break;
 				case "order":
 					this.simStuff = new productselectedoptionsCollection();
-					this.simItem = new productselectedoptionsCollection();
 					this.searchObj = {
-						fields: "*,product_selected_options.*,product_selected_options.step_option.*,step_option.step.*,step.*,product_selected_options.option,option.*,product_selected_options.quote.*,quote.*",
+						fields: "*,product_selected_options.*,product_selected_options.step_option.*,step_option.step.*,step.*,product_selected_options.option,option.*",
 						order_key_primary: data.record,
 					};
 					this.key1 = "product_selected_options:option";
@@ -111,9 +106,8 @@ define([
 					break;
 				case "quote":
 					this.simStuff = new productselectedoptionsCollection();
-					this.simItem = new productselectedoptionsCollection();
 					this.searchObj = {
-						fields: "*,product_selected_options.*,product_selected_options.step_option.*,step_option.step.*,step.*,product_selected_options.option,option.*,product_selected_options.quote.*,quote.*",
+						fields: "*,product_selected_options.*,product_selected_options.step_option.*,step_option.step.*,step.*,product_selected_options.option,option.*",
 						quote_key_primary: data.record,
 					};
 					this.key1 = "product_selected_options:option";
@@ -129,7 +123,6 @@ define([
 				data: this.searchObj,
 				success: _.bind(function()
 				{
-					//this.custNum = this.simStuff.models[0].related("product_selected_options:quote").get("customer_acc_num");
 					//if (this.simStuff.models[0].attributes.hasOwnProperty('id') && !c)
 					if (this.simStuff.models.length == 20 && !c)
 					{
@@ -143,12 +136,12 @@ define([
 									step: thing.related(this.key2).related("steps_options:step").get('description'),
 									value: value
 							};
-							//this.completeRender(data);
+							this.completeRender(data);
 						},this) );
 					}
 
-					//else
-					//{
+					else
+					{
 						c = true;
 						this.stepStuff = new productstepsCollection();
 						this.stepStuff.fetch(
@@ -177,81 +170,16 @@ define([
 									{
 										data:
 										{
-											fields: '*,steps_options.*,steps_options.option.*,parent_option.*,option.*,step.*,option.custompricing.*,custompricing.*',
+											fields: '*,steps_options.*,steps_options.option.*,parent_option.*,option.*,step.*',
 											parent_step_option_key_primary: this.parentKey,
 											product_step: this.stepStuff.models[0].attributes.key_primary,
 											sort: 'description_for_tree'
 										},
 										success: _.bind(function ()
 										{
-											_.each(this.stuff.models, _.bind(function(thing) {
-												if (typeof thing._embedded["steps_options:option"] !== 'undefined') {
-													if (typeof thing._embedded["steps_options:option"]._embedded !== 'undefined') {
-														thing.attributes.price = thing._embedded["steps_options:option"]._embedded["options:custompricing"][0].custom_price;
-													}
-												}
-											},this) );
 											if (!_.isEmpty(this.stuff.models[0].attributes)){
 
-												var saveData = {
-													//option_key: this.stuff.models[0]._embedded["steps_options:option"].id,
-													//simulator_key: valueArr[0],
-													step_key: this.stepStuff.models[0].attributes.sequence,
-													//step_option: this.stuff.models[0].attributes.id,
-												};
-
-/*------------------------------------------------------------------------------------------------------------------------
-* Below is the 3rd SWITCH/CASE statements you need to edit. The format is as follows:
-*
-*		case "NAME OF TABLE IN URL"
-*			this.simitemModelObj['NEW ENTITY PRIMARY KEY'] = Number(valueArr[0]);
-*			itemSaveModel = new NEW ENTITY MODEL(this.simitemModelObj);
-*			break;
-*
-* But if you are unsure then duplicate an existing one making the relevant chages
--------------------------------------------------------------------------------------------------------------------------*/
-
-													switch (this.table) {
-														case "simulator":
-															saveData['simulator_key'] = Number(valueArr[0]);
-															itemSaveModel = new simitemsModel(saveData);
-															break;
-														case "order":
-															saveData['order_key_primary'] = valueArr[0];
-															itemSaveModel = new productselectedoptionsModel(saveData);
-															break;
-														case "quote":
-															saveData['quote_key_primary'] = valueArr[0];
-															itemSaveModel = new productselectedoptionsModel(saveData);
-															break;
-													}
-
-
-												this.simItem.fetch(
-												{
-													data: saveData,
-													success: _.bind(function (response){
-														console.log('inital save',response);
-														console.log(this.stuff.models[0]);
-														if (typeof response.models[0].get('id') === 'undefined') {
-															console.log('try to save');
-															itemSaveModel.save().done(_.bind(function(saveResponse){
-																if (this.stuff.models[0].get('description_for_tree') === 'Calculation') {
-																	this.trigger('calc', saveResponse);
-																}
-																simID = saveResponse.id;
-																this.render(saveResponse.id);
-															}, this));
-														}
-														else
-														{
-															simID = response.models[0].get('id');
-															this.render(response.models[0].get('id'));
-														}
-													}, this)
-												}); // the magic ends here!!!
-
-												//this.render();
+												this.render();
 											} else {
 												this.noMoreSteps();
 											}
@@ -261,7 +189,7 @@ define([
 
 							}, this)
 						});
-					//}
+					}
 				}, this)
 			});
 
@@ -296,7 +224,7 @@ define([
 			if (e.keyCode == 13)
 			{
 				var productKey = $(e.target).attr("data-keyProduct");
-				var parentKey = $(e.target).attr("data-keyParent");
+				var parentKey = $(e.target).attr("data-keyParentt");
 				var seq = $(e.target).attr("data-keySequence");
 				var option = $(e.target).attr("data-keyOption");
 				var stepLink = $(e.target).attr("data-steplink");
@@ -314,12 +242,12 @@ define([
 
 				if (key) {saveData['id'] = key;}
 
-				var saved = this.saveOption(saveData);
+				this.saveOption(saveData);
 
 				this.child = new optionSelect(
 				{
 					productKey: productKey,
-					parentKey: stepLink,
+					parentKey: parentKey,
 					seq: seq,
 					table: this.table
 
@@ -330,6 +258,7 @@ define([
 
 		saveOption: function(data)
 		{
+			var saved = false;
 			var table = this.table;
 			var itemSaveModel;
 
@@ -369,17 +298,11 @@ define([
 						break;
 				}
 
-				itemSaveModel.save();
+				itemSaveModel.save().done(function(){
+					saved = true;
+					return saved;
+				});
 
-		},
-
-		getCalc: function (response)
-		{
-			console.log('getCalc',response);
-			//var parameter = response.id + '\r' + theFile;
-			//$.post('/fm', { action: 'script', file: theFile, script: 'Update_Calculation', parameter: parameter });
-			$.post('/fm', { action: 'script', file: theFile, script: 'Update_Calculation', parameter: response.id});
-			return "yess";
 		},
 
 		buttonOption: function (e)
@@ -402,7 +325,6 @@ define([
 			var seq = $(e.target).find(":selected").attr("data-keySequence");
 			var price = $(e.target).find(":selected").attr("data-price");
 			var key = $(e.target).find(":selected").attr("data-simkey");
-
 			if (currentVal == "default")
 			{
 				return;
@@ -423,7 +345,7 @@ define([
 
 			if (key) {saveData['id'] = key;}
 
-			var saved = this.saveOption(saveData);
+			this.saveOption(saveData);
 
 			this.child = new optionSelect(
 			{
@@ -436,71 +358,92 @@ define([
 			this.$el.append(this.child.$el);
 		},
 
-		render: function (data)
+		render: function ()
 		{
 			var num = 0;
 			var defaultVal;
-			var itemSaveModel;
-			var simID = data;
 			if (this.stuff.models[0].attributes.default) {defaultVal = this.stuff.models[0].attributes.default;}
+			switch (this.stepStuff.models[0].attributes.sequence)
+			{
+				case 7:
+					//defaultVal = valueArr[0];
+					break;
+				case 16:
+				// IF( Stagger Type = "None" ; 0 ; IF( Stagger Type = "Stairstep Continuous" ; (Number AC - 1)  * Stagger Amount ; Stagger Amount ) )
+					if (valueArr[6] == 44)
+					{num = 0;}
+					else if(valueArr[6] == 43)
+					{num = (Number(valueArr[10]) - 1) * Number(valueArr[11]);}
+					else
+					{num = Number(valueArr[11]);}
+					break;
+				case 17:
+				//( 1up Cutoff * Number AR) + Stagger Amount + Add AC For Marks
+					num = (Number(valueArr[7]) * Number(valueArr[8])) + Number(valueArr[16]) + Number(valueArr[11]) + Number(valueArr[13]);
+					break;
+				case 18:
+				// (1up Web * Number AC) + Add AC For Marks + Width Flashing
+					num = (Number(valueArr[9]) * Number(valueArr[10])) + Number(valueArr[13]) + Number(valueArr[15]);
+					break;
+				case 19:
+					{num = (Number(priceArr[1]) + Number(priceArr[3])).toFixed(5);}
+					break;
+				case 20:
+					num = Number(valueArr[17]) * Number(valueArr[18]);
+					break;
+				default:
+					num = Math.floor(Math.random() * 41) + 60;
+			}
 
-/*					switch (this.stepStuff.models[0].attributes.sequence)
+			this.simItem = new simitemsCollection();
+
+			var stepData = {
+				steps: this.stuff.models,
+				seq: this.stepStuff.models[0].attributes.sequence,
+				productKey: this.productKey,
+				parentKey: this.parentKey,
+				step: this.stepStuff.models[0].related('products_steps:step').get('description'),
+				num: num,
+				defaultVal: defaultVal,
+			};
+
+			this.simItem.fetch(
+			{
+				data:
+				{
+					fields: '*',
+					simulator_key: Number(valueArr[0]),
+					step_key: this.stepStuff.models[0].attributes.sequence
+				},
+				success: _.bind(function ()
+				{
+					if (this.simItem.models.length === 0)
+					{stepData['simKey'] = undefined;}
+					else
 					{
-						case 7:
-							//defaultVal = valueArr[0];
-							break;
-						case 16:
-						// IF( Stagger Type = "None" ; 0 ; IF( Stagger Type = "Stairstep Continuous" ; (Number AC - 1)  * Stagger Amount ; Stagger Amount ) )
-							if (valueArr[6] == 44)
-							{num = 0;}
-							else if(valueArr[6] == 43)
-							{num = (Number(valueArr[10]) - 1) * Number(valueArr[11]);}
-							else
-							{num = Number(valueArr[11]);}
-							break;
-						case 17:
-						//( 1up Cutoff * Number AR) + Stagger Amount + Add AC For Marks
-							num = (Number(valueArr[7]) * Number(valueArr[8])) + Number(valueArr[16]) + Number(valueArr[11]) + Number(valueArr[13]);
-							break;
-						case 18:
-						// (1up Web * Number AC) + Add AC For Marks + Width Flashing
-							num = (Number(valueArr[9]) * Number(valueArr[10])) + Number(valueArr[13]) + Number(valueArr[15]);
-							break;
-						case 19:
-							{num = (Number(priceArr[1]) + Number(priceArr[3])).toFixed(5);}
-							break;
-						case 20:
-							num = Number(valueArr[17]) * Number(valueArr[18]);
-							break;
-						default:
-							num = Math.floor(Math.random() * 41) + 60;
+						stepData['simKey'] = this.simItem.models[0].attributes.id;
+						if (typeof defaultVal === 'undefined') {stepData['defaultVal'] = this.simItem.models[0].get('value');}
 					}
-*/
-
-					var stepData = {
-						steps: this.stuff.models,
-						seq: this.stepStuff.models[0].attributes.sequence,
-						productKey: this.productKey,
-						parentKey: this.parentKey,
-						step: this.stepStuff.models[0].related('products_steps:step').get('description'),
-						num: num,
-						defaultVal: defaultVal,
-						simKey: simID
-					};
-
-					if (typeof defaultVal === 'undefined') {stepData['defaultVal'] = this.simItem.models[0].get('value');}
-					stepData['num'] = this.simItem.models[0].get('value');
-
 					var compiledTemplate = _.template(optionsTemplate);
 					this.$el.html(compiledTemplate(stepData));
 					this.$el.find("input").focus();
 					this.$el.find("select").focus();
-					//console.log(stepData['steps'][0].get('description_for_tree'));
-					if ((stepData['steps'][0].get('description_for_tree') !== 'Value' && stepData['steps'].length === 1) || this.simItem.models[0].get('value')) {
+					if (stepData['steps'].length === 1 || this.simItem.models[0].get('value')) {
 						var e = $.Event('keydown', { keyCode: 13 });
 						$(this.$el.find("select")).trigger(e);
 						$(this.$el.find("input")).trigger(e);
 					}
+				}, this),
+				error: _.bind(function()
+				{
+					stepData['simKey'] =  null;
+					var compiledTemplate = _.template(optionsTemplate);
+					this.$el.html(compiledTemplate(data));
+					this.$el.find("input").focus();
+					this.$el.find("select").focus();
+				}, this),
+			});
+
 
 		},
 

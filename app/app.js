@@ -1,4 +1,4 @@
-var version = '1.3.7';
+var version = '1.4.1';
 require.config({
     baseUrl: 'lib',
 	paths: {

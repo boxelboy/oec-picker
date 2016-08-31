@@ -76,7 +76,6 @@ define(['jquery', 'underscore', 'backbone', 'text!templates/flow/index.html', 't
 		},
 		addChildView: function (object, type)
 		{
-			console.log(object, type);
 			this.flowChartView = new flowChartView(
 			{
 				data: object,
@@ -198,7 +197,6 @@ define(['jquery', 'underscore', 'backbone', 'text!templates/flow/index.html', 't
 				data: this.settings
 			};
 
-			console.log(data);
 			var compiledTemplate = _.template(alertTemplate);
 			this.$el.html(compiledTemplate(data));
 		}
@@ -268,11 +266,10 @@ define(['jquery', 'underscore', 'backbone', 'text!templates/flow/index.html', 't
 		},
 		render: function ()
 		{
-			console.log('eh??');
 			var data = {
 				products: this.products,
 			};
-			//console.log(data.steps[1].related('steps:steps_options').models);
+			
 			var compiledTemplate = _.template(flowTemplate);
 			this.$el.html(compiledTemplate(data));
 		}
